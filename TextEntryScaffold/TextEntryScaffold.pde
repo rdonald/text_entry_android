@@ -18,6 +18,12 @@ final float sizeOfInputArea = DPIofYourDeviceScreen*1; //aka, 1.0 inches square!
 PImage watch;
 PImage finger;
 
+float click1pos;
+float click2pos;
+
+float dclick1time = 0.0;
+float dclick2time = 0.0;
+
 //Variables for my silly implementation. You can delete this:
 char currentLetter = 'a';
 
@@ -41,6 +47,8 @@ void setup()
 void draw()
 {
   background(255); //clear background
+  if (millis() - dclick1time > 500)
+    dclick1time = 0;
   
    //check to see if the user finished. You can't change the score computation.
   if (finishTime!=0)
@@ -115,9 +123,40 @@ boolean didMouseClick(float x, float y, float w, float h) //simple function to d
   return (mouseX > x && mouseX<x+w && mouseY>y && mouseY<y+h); //check to see if it is in button bounds
 }
 
+
 //my terrible implementation you can entirely replace
 void mousePressed()
 {
+  if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea/2)) { //check if click occured in letter area
+    if (dclick1time > 0) { //1st click of double click has happened already
+      System.out.println("dclick1time: " + dclick1time);
+      dclick2time = millis();
+      System.out.println("dclick2time: " + dclick2time);
+      System.out.println("double click time ms: " + (dclick2time - dclick1time));
+      if (dclick2time - dclick1time <= 500) { //double click has finished
+        //do clicking
+        if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea/2)) { //check if click occured in letter area
+          if (currentLetter=='_') //if underscore, consider that a space bar
+            currentTyped+=" ";
+          else if (currentLetter=='`' & currentTyped.length()>0) //if `, treat that as a delete command
+            currentTyped = currentTyped.substring(0, currentTyped.length()-1);
+          else if (currentLetter!='`') //if not any of the above cases, add the current letter to the typed string
+            currentTyped+=currentLetter;
+          }
+          dclick1time = 0;
+          dclick2time = 0;
+      }
+      else { //double click wasnt fast enough, reset
+        dclick1time = 0;
+        dclick2time = 0;
+      }
+    }
+    else if (dclick1time == 0) { //1st click of double click has not happened yet
+      dclick1time = millis();
+      System.out.println("first click of dclick started at: " + dclick1time);
+    }
+  }
+  
   if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in left button
   {
     currentLetter --;
@@ -132,15 +171,7 @@ void mousePressed()
       currentLetter = '_';
   }
 
-  if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea/2)) //check if click occured in letter area
-  {
-    if (currentLetter=='_') //if underscore, consider that a space bar
-      currentTyped+=" ";
-    else if (currentLetter=='`' & currentTyped.length()>0) //if `, treat that as a delete command
-      currentTyped = currentTyped.substring(0, currentTyped.length()-1);
-    else if (currentLetter!='`') //if not any of the above cases, add the current letter to the typed string
-      currentTyped+=currentLetter;
-  }
+  
 
   //You are allowed to have a next button outside the 1" area
   if (didMouseClick(600, 600, 200, 200)) //check if click is in next button
