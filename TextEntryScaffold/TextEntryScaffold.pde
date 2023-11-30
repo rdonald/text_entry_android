@@ -105,6 +105,19 @@ void draw()
     nextTrial(); //start the trials!
   }
 
+  for (int row = 0; row < gridRows; row++) {
+    for (int col = 0; col < gridCols; col++) {
+      float x = width / 2 - (sizeOfInputArea / 2) + col * cellWidth;
+      float y = height / 2 - (sizeOfInputArea / 2) + row * cellHeight;
+      fill(255); // White background for cells
+      rect(x, y, cellWidth, cellHeight); // Draw cell background
+      fill(0); // Black text for letters
+      textAlign(CENTER, CENTER);
+      textSize(cellHeight * 0.8); // Set text size to 80% of cell height
+      text(letterGrid[row][col], x + cellWidth / 2, y + cellHeight / 2); // Draw letter in the center of the cell
+    }
+  }
+
   if (startTime!=0)
   {
     //feel free to change the size and position of the target/entered phrases and next button 
@@ -196,18 +209,6 @@ void mouseClicked() {
       dclick1time = millis();
       //System.out.println("first click of dclick started at: " + dclick1time);
     }
-  }
-  
-if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in left button
-  {
-    currentSetIndex = max(0, currentSetIndex - 6);
-    updateLetterGrid();
-  }
-
-  if (didMouseClick(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in right button
-  {
-    currentSetIndex = min(alphabet.length() - 6, currentSetIndex + 6);
-    updateLetterGrid();
   }
 
   
