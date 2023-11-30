@@ -127,7 +127,7 @@ boolean didMouseClick(float x, float y, float w, float h) //simple function to d
 }
 
 void mouseClicked() {
-  System.out.println("IN MOUSECLICKED");
+  //System.out.println("IN MOUSECLICKED");
   if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea/2)) { //check if click occured in letter area
     if (dclick1time > 0) { //1st click of double click has happened already
       //System.out.println("dclick1time: " + dclick1time);
@@ -185,7 +185,7 @@ void mouseClicked() {
 //my terrible implementation you can entirely replace
 void mousePressed()
 {
-  System.out.println("IN MOUSEPRESSED");
+  //System.out.println("IN MOUSEPRESSED");
   if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea/2) && !dclickStatus) { //swipe must start in click area
     swipePos1x = mouseX;
     swipePos1y = mouseY;
@@ -198,6 +198,17 @@ void mouseReleased() {
   swipePos2y = mouseY;
   if (swipePos1x < swipePos2x && (swipePos2y <= swipePos1y + 20 && swipePos2y >= swipePos1y - 20)) { //right swipe
     System.out.println("swiped right");
+  }
+  else if (swipePos1x > swipePos2x && (swipePos2y <= swipePos1y + 20 && swipePos2y >= swipePos1y - 20)) { //left swipe
+    System.out.println("swiped left");
+  }
+  else if (swipePos1y > swipePos2y && (swipePos2x <= swipePos1x + 20 && swipePos2x >= swipePos1x - 20)) { //up swipe
+    //System.out.println("swiped up");
+    currentTyped+=" ";
+  }
+  else if ((swipePos1y < swipePos2y && (swipePos2x <= swipePos1x + 20 && swipePos2x >= swipePos1x - 20)) && currentTyped.length() > 0) { // down swipe
+    //System.out.println("swiped down");
+    currentTyped = currentTyped.substring(0, currentTyped.length()-1);
   }
 }
 
