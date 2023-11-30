@@ -15,6 +15,8 @@ String currentPhrase = ""; //the current target phrase
 String currentTyped = ""; //what the user has typed so far
 final int DPIofYourDeviceScreen = 120; //you will need to look up the DPI or PPI of your device to make sure you get the right scale. Or play around with this value.
 final float sizeOfInputArea = DPIofYourDeviceScreen*1; //aka, 1.0 inches square!
+int currentLetterIndex = 0;
+boolean incorrectLetter = false;
 PImage watch;
 PImage finger;
 
@@ -111,9 +113,20 @@ void draw()
     rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw left red button
     fill(0, 255, 0); //green button
     rect(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw right green button
-    textAlign(CENTER);
-    fill(200);
-    text("" + currentLetter, width/2, height/2-sizeOfInputArea/4); //draw current letter
+    //textAlign(CENTER);
+    //fill(200);
+    //text("" + currentLetter, width/2, height/2-sizeOfInputArea/4); //draw current letter
+    
+    if(incorrectLetter == false) {
+      textAlign(CENTER);
+      fill(200);
+      text("" + currentLetter, width/2, height/2-sizeOfInputArea/4); //draw current letter
+    } else {
+      textAlign(CENTER);
+      fill(255, 0, 0);
+      text("" + currentLetter, width/2, height/2-sizeOfInputArea/4); //draw current letter
+    }
+    
   }
  
  
@@ -144,6 +157,18 @@ void mouseClicked() {
           else if (currentLetter!='`') //if not any of the above cases, add the current letter to the typed string
             currentTyped+=currentLetter;
           }
+          
+          if(!currentTyped.equals(currentPhrase.substring(0, currentTyped.length()))) {
+            System.out.println("INCORRECT LETTER");
+            System.out.println(currentTyped);
+            System.out.println(currentPhrase.substring(0, currentTyped.length()));
+            incorrectLetter = true;
+          } else {
+            incorrectLetter = false;
+          }
+          
+          currentLetterIndex++;
+          
           dclick1time = 0;
           dclick2time = 0;
           dclickStatus = false;
