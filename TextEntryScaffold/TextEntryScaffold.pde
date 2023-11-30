@@ -92,6 +92,7 @@ void draw()
   fill(100);
   rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea); //input area should be 1" by 1"
   
+  
 
   if (startTime==0 & !mousePressed)
   {
@@ -104,8 +105,8 @@ void draw()
   {
     nextTrial(); //start the trials!
   }
-
-  for (int row = 0; row < gridRows; row++) {
+  
+for (int row = 0; row < gridRows; row++) {
     for (int col = 0; col < gridCols; col++) {
       float x = width / 2 - (sizeOfInputArea / 2) + col * cellWidth;
       float y = height / 2 - (sizeOfInputArea / 2) + row * cellHeight;
@@ -142,7 +143,6 @@ void draw()
     //textAlign(CENTER);
     //fill(200);
     //text("" + currentLetter, width/2, height/2-sizeOfInputArea/4); //draw current letter
-    
     if(incorrectLetter == false) {
       textAlign(CENTER);
       fill(200);
@@ -152,7 +152,6 @@ void draw()
       fill(255, 0, 0);
       text("" + currentLetter, width/2, height/2-sizeOfInputArea/4); //draw current letter
     }
-    
   }
  
  
@@ -188,7 +187,6 @@ void mouseClicked() {
           else if (currentLetter!='`') //if not any of the above cases, add the current letter to the typed string
             currentTyped+=currentLetter;
           }
-          
           if(!currentTyped.equals(currentPhrase.substring(0, currentTyped.length()))) {
             System.out.println("INCORRECT LETTER");
             System.out.println(currentTyped);
@@ -197,9 +195,8 @@ void mouseClicked() {
           } else {
             incorrectLetter = false;
           }
-          
+
           currentLetterIndex++;
-          
           dclick1time = 0;
           dclick2time = 0;
           dclickStatus = false;
@@ -216,6 +213,17 @@ void mouseClicked() {
     }
   }
 
+if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in left button
+  {
+    currentSetIndex = max(0, currentSetIndex - 6);
+    updateLetterGrid();
+  }
+
+  if (didMouseClick(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in right button
+  {
+    currentSetIndex = min(alphabet.length() - 6, currentSetIndex + 6);
+    updateLetterGrid();
+  }
   
 
   //You are allowed to have a next button outside the 1" area
@@ -227,8 +235,7 @@ void mouseClicked() {
 //my terrible implementation you can entirely replace
 void mousePressed()
 {
-  
-  for (int row = 0; row < gridRows; row++) {
+ for (int row = 0; row < gridRows; row++) {
     for (int col = 0; col < gridCols; col++) {
       float x = width / 2 - (sizeOfInputArea / 2) + col * cellWidth;
       float y = height / 2 - (sizeOfInputArea / 2) + row * cellHeight;
@@ -239,6 +246,7 @@ void mousePressed()
       }
     }
   }
+
   //System.out.println("IN MOUSEPRESSED");
   if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea/2) && !dclickStatus) { //swipe must start in click area
     swipePos1x = mouseX;
