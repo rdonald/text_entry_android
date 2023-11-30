@@ -166,6 +166,11 @@ boolean didMouseClick(float x, float y, float w, float h) //simple function to d
 }
 
 void mouseClicked() {
+  if (selectedRow != -1 && selectedCol != -1) {
+    currentLetter = letterGrid[selectedRow][selectedCol];
+    selectedRow = -1;
+    selectedCol = -1;
+  }
   //System.out.println("IN MOUSECLICKED");
   if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea/2)) { //check if click occured in letter area
     if (dclick1time > 0) { //1st click of double click has happened already
