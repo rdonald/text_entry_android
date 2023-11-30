@@ -29,6 +29,16 @@ float dclick1time = 0.0;
 float dclick2time = 0.0;
 boolean dclickStatus = false;
 
+char[][] letterGrid = new char[2][3];
+int gridRows = 2;
+int gridCols = 3;
+float cellWidth;
+float cellHeight;
+int selectedRow = -1;
+int selectedCol = -1;
+String alphabet = "abcdefghijklmnopqrstuvwxyz";
+int currentSetIndex = 0;
+
 //Variables for my silly implementation. You can delete this:
 char currentLetter = 'a';
 
@@ -46,6 +56,9 @@ void setup()
   size(800, 800); //Sets the size of the app. You should modify this to your device's native size. Many phones today are 1080 wide by 1920 tall.
   textFont(createFont("Arial", 20)); //set the font to arial 24. Creating fonts is expensive, so make difference sizes once in setup, not draw
   noStroke(); //my code doesn't use any strokes
+  cellWidth = (sizeOfInputArea / gridCols);
+  cellHeight = (sizeOfInputArea / gridRows) / 2;
+  updateLetterGrid();
 }
 
 //You can modify anything in here. This is just a basic implementation.
@@ -185,18 +198,16 @@ void mouseClicked() {
     }
   }
   
-  if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in left button
+if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in left button
   {
-    currentLetter --;
-    if (currentLetter<'_') //wrap around to z
-      currentLetter = 'z';
+    currentSetIndex = max(0, currentSetIndex - 6);
+    updateLetterGrid();
   }
 
   if (didMouseClick(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in right button
   {
-    currentLetter ++;
-    if (currentLetter>'z') //wrap back to space (aka underscore)
-      currentLetter = '_';
+    currentSetIndex = min(alphabet.length() - 6, currentSetIndex + 6);
+    updateLetterGrid();
   }
 
   
@@ -210,12 +221,48 @@ void mouseClicked() {
 //my terrible implementation you can entirely replace
 void mousePressed()
 {
+  
+  for (int row = 0; row < gridRows; row++) {
+    for (int col = 0; col < gridCols; col++) {
+      float x = width / 2 - (sizeOfInputArea / 2) + col * cellWidth;
+      float y = height / 2 - (sizeOfInputArea / 2) + row * cellHeight;
+      if (mouseX >= x && mouseX < x + cellWidth && mouseY >= y && mouseY < y + cellHeight) {
+        // Detected a click within a grid cell, handle the click here
+        handleCellClick(row, col);
+        return; // Exit the loop after handling the click
+      }
+    }
+  }
   //System.out.println("IN MOUSEPRESSED");
   if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea/2) && !dclickStatus) { //swipe must start in click area
     swipePos1x = mouseX;
     swipePos1y = mouseY;
   }
   
+}
+
+void handleCellClick(int row, int col) {
+  // Handle the click on the cell identified by row and col
+  // For example, set the current letter or perform other actions
+  currentLetter = letterGrid[row][col];
+  // Add any additional handling if needed
+}
+
+void updateLetterGrid() {
+  // Update the grid with a new set of letters
+  for (int row = 0; row < gridRows; row++) {
+    for (int col = 0; col < gridCols; col++) {
+      int index = currentSetIndex + row * gridCols + col;
+      // Ensure the index is within the bounds of the alphabet
+      if (index < alphabet.length()) {
+        // Update the cell with the correct letter
+        letterGrid[row][col] = alphabet.charAt(index);
+      } else {
+        // If the index is beyond the alphabet, fill the cell with a space
+        letterGrid[row][col] = ' ';
+      }
+    }
+  }
 }
 
 void mouseReleased() {
