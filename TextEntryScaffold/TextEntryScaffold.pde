@@ -341,6 +341,7 @@ void mouseReleased() {
 
 void nextTrial()
 {
+  incorrectLetter = false;
   if (currTrialNum >= totalTrialNum) //check to see if experiment is done
     return; //if so, just return
 
