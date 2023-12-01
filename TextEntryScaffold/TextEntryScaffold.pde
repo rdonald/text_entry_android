@@ -105,8 +105,10 @@ void draw()
   {
     nextTrial(); //start the trials!
   }
-  
-for (int row = 0; row < gridRows; row++) {
+
+  if (startTime!=0)
+  {
+    for (int row = 0; row < gridRows; row++) {
     for (int col = 0; col < gridCols; col++) {
       float x = width / 2 - (sizeOfInputArea / 2) + col * cellWidth;
       float y = height / 2 - (sizeOfInputArea / 2) + row * cellHeight;
@@ -118,9 +120,7 @@ for (int row = 0; row < gridRows; row++) {
       text(letterGrid[row][col], x + cellWidth / 2, y + cellHeight / 2); // Draw letter in the center of the cell
     }
   }
-
-  if (startTime!=0)
-  {
+  
     //feel free to change the size and position of the target/entered phrases and next button 
     textAlign(LEFT); //align the text left
     fill(128);
@@ -136,21 +136,39 @@ for (int row = 0; row < gridRows; row++) {
     text("NEXT > ", 650, 650); //draw next label
 
     //example design draw code
-    fill(255, 0, 0); //red button
-    rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw left red button
-    fill(0, 255, 0); //green button
-    rect(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw right green button
+    //fill(255, 0, 0); //red button
+    //rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw left red button
+    //fill(0, 255, 0); //green button
+    //rect(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw right green button
+    
     //textAlign(CENTER);
     //fill(200);
     //text("" + currentLetter, width/2, height/2-sizeOfInputArea/4); //draw current letter
+    
     if(incorrectLetter == false) {
+      // first half phrase
       textAlign(CENTER);
       fill(200);
-      text("" + currentLetter, width/2, height/2-sizeOfInputArea/4); //draw current letter
+      textSize(12); 
+      text("" + currentPhrase.substring(0, currentPhrase.length()/2), width/2, height/2+20); //draw current letter
+      
+      // second half phrase
+      textAlign(CENTER);
+      fill(200);
+      textSize(12); 
+      text("" + currentPhrase.substring(currentPhrase.length()/2, currentPhrase.length()), width/2, height/2+40); //draw current letter
     } else {
+      // first half phrase
       textAlign(CENTER);
       fill(255, 0, 0);
-      text("" + currentLetter, width/2, height/2-sizeOfInputArea/4); //draw current letter
+      textSize(12); 
+      text("" + currentPhrase.substring(0, currentPhrase.length()/2), width/2, height/2+20); //draw current letter
+      
+      // second half phrase
+      textAlign(CENTER);
+      fill(255, 0, 0);
+      textSize(12); 
+      text("" + currentPhrase.substring(currentPhrase.length()/2, currentPhrase.length()), width/2, height/2+40); //draw current letter
     }
   }
  
@@ -213,17 +231,17 @@ void mouseClicked() {
     }
   }
 
-if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in left button
-  {
-    currentSetIndex = max(0, currentSetIndex - 6);
-    updateLetterGrid();
-  }
+//if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in left button
+//  {
+//    currentSetIndex = max(0, currentSetIndex - 6);
+//    updateLetterGrid();
+//  }
 
-  if (didMouseClick(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in right button
-  {
-    currentSetIndex = min(alphabet.length() - 6, currentSetIndex + 6);
-    updateLetterGrid();
-  }
+//  if (didMouseClick(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in right button
+//  {
+//    currentSetIndex = min(alphabet.length() - 6, currentSetIndex + 6);
+//    updateLetterGrid();
+//  }
   
 
   //You are allowed to have a next button outside the 1" area
@@ -242,13 +260,14 @@ void mousePressed()
       if (mouseX >= x && mouseX < x + cellWidth && mouseY >= y && mouseY < y + cellHeight) {
         // Detected a click within a grid cell, handle the click here
         handleCellClick(row, col);
-        return; // Exit the loop after handling the click
+        break; // Exit the loop after handling the click
       }
     }
   }
 
   //System.out.println("IN MOUSEPRESSED");
-  if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea/2) && !dclickStatus) { //swipe must start in click area
+  if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea) && !dclickStatus) { //swipe must start in click area
+    System.out.println("Stored x 1 and y 1 position");
     swipePos1x = mouseX;
     swipePos1y = mouseY;
   }
@@ -280,21 +299,42 @@ void updateLetterGrid() {
 }
 
 void mouseReleased() {
+  System.out.println("got here");
   swipePos2x = mouseX;
   swipePos2y = mouseY;
   if (swipePos1x < swipePos2x && (swipePos2y <= swipePos1y + 20 && swipePos2y >= swipePos1y - 20)) { //right swipe
     System.out.println("swiped right");
+    currentSetIndex = max(0, currentSetIndex - 6);
+    updateLetterGrid();
   }
   else if (swipePos1x > swipePos2x && (swipePos2y <= swipePos1y + 20 && swipePos2y >= swipePos1y - 20)) { //left swipe
     System.out.println("swiped left");
+    currentSetIndex = min(alphabet.length() - 6, currentSetIndex + 6);
+    updateLetterGrid();
   }
   else if (swipePos1y > swipePos2y && (swipePos2x <= swipePos1x + 20 && swipePos2x >= swipePos1x - 20)) { //up swipe
     //System.out.println("swiped up");
     currentTyped+=" ";
+    if(!currentTyped.equals(currentPhrase.substring(0, currentTyped.length()))) {
+      System.out.println("INCORRECT LETTER");
+      System.out.println(currentTyped);
+      System.out.println(currentPhrase.substring(0, currentTyped.length()));
+      incorrectLetter = true;
+    } else {
+      incorrectLetter = false;
+    }
   }
   else if ((swipePos1y < swipePos2y && (swipePos2x <= swipePos1x + 20 && swipePos2x >= swipePos1x - 20)) && currentTyped.length() > 0) { // down swipe
     //System.out.println("swiped down");
     currentTyped = currentTyped.substring(0, currentTyped.length()-1);
+    if(!currentTyped.equals(currentPhrase.substring(0, currentTyped.length()))) {
+      System.out.println("INCORRECT LETTER");
+      System.out.println(currentTyped);
+      System.out.println(currentPhrase.substring(0, currentTyped.length()));
+      incorrectLetter = true;
+    } else {
+      incorrectLetter = false;
+    }
   }
 }
 
