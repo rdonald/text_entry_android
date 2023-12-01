@@ -65,8 +65,8 @@ void setup()
 void draw()
 {
   background(255); //clear background
-  if (millis() - dclick1time > 350)
-    dclick1time = 0;
+  //if (millis() - dclick1time > 350)
+    //dclick1time = 0;
   
    //check to see if the user finished. You can't change the score computation.
   if (finishTime!=0)
@@ -190,12 +190,12 @@ void mouseClicked() {
   }
   //System.out.println("IN MOUSECLICKED");
   if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea/2)) { //check if click occured in letter area
-    if (dclick1time > 0) { //1st click of double click has happened already
+    //if (dclick1time > 0) { //1st click of double click has happened already
       //System.out.println("dclick1time: " + dclick1time);
-      dclick2time = millis();
+      //dclick2time = millis();
       //System.out.println("dclick2time: " + dclick2time);
       //System.out.println("double click time ms: " + (dclick2time - dclick1time));
-      if (dclick2time - dclick1time <= 350) { //double click has finished
+      //if (dclick2time - dclick1time <= 350) { //double click has finished
         //do clicking
         if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea/2)) { //check if click occured in letter area
           if (currentLetter=='_') //if underscore, consider that a space bar
@@ -215,20 +215,20 @@ void mouseClicked() {
           }
 
           currentLetterIndex++;
-          dclick1time = 0;
+          /*dclick1time = 0;
           dclick2time = 0;
-          dclickStatus = false;
-      }
-      else { //double click wasnt fast enough, reset
+          dclickStatus = false;*/
+      //}
+      /*else { //double click wasnt fast enough, reset
         dclick1time = 0;
         dclick2time = 0;
-      }
-    }
-    else if (dclick1time == 0) { //1st click of double click has not happened yet
+      }*/
+    //}
+    /*else if (dclick1time == 0) { //1st click of double click has not happened yet
       dclickStatus = true;
       dclick1time = millis();
       //System.out.println("first click of dclick started at: " + dclick1time);
-    }
+    } */
   }
 
 //if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in left button
