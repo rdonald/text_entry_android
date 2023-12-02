@@ -13,7 +13,7 @@ float lettersExpectedTotal = 0; //a running total of the number of letters expec
 float errorsTotal = 0; //a running total of the number of errors (when hitting next)
 String currentPhrase = ""; //the current target phrase
 String currentTyped = ""; //what the user has typed so far
-final int DPIofYourDeviceScreen = 415; //you will need to look up the DPI or PPI of your device to make sure you get the right scale. Or play around with this value.
+final int DPIofYourDeviceScreen = 500; //you will need to look up the DPI or PPI of your device to make sure you get the right scale. Or play around with this value.
 final float sizeOfInputArea = DPIofYourDeviceScreen*1; //aka, 1.0 inches square!
 int currentLetterIndex = 0;
 boolean incorrectLetter = false;
@@ -74,17 +74,17 @@ void draw()
     fill(0);
     textAlign(CENTER);
     text("Trials complete!",400,200); //output
-    text("Total time taken: " + (finishTime - startTime),400,220); //output
-    text("Total letters entered: " + lettersEnteredTotal,400,240); //output
-    text("Total letters expected: " + lettersExpectedTotal,400,260); //output
-    text("Total errors entered: " + errorsTotal,400,280); //output
+    text("Total time taken: " + (finishTime - startTime),400,240); //output
+    text("Total letters entered: " + lettersEnteredTotal,400,280); //output
+    text("Total letters expected: " + lettersExpectedTotal,400,320); //output
+    text("Total errors entered: " + errorsTotal,400,360); //output
     float wpm = (lettersEnteredTotal/5.0f)/((finishTime - startTime)/60000f); //FYI - 60K is number of milliseconds in minute
-    text("Raw WPM: " + wpm,400,300); //output
+    text("Raw WPM: " + wpm,400,400); //output
     float freebieErrors = lettersExpectedTotal*.05; //no penalty if errors are under 5% of chars
-    text("Freebie errors: " + nf(freebieErrors,1,3),400,320); //output
+    text("Freebie errors: " + nf(freebieErrors,1,3),400,440); //output
     float penalty = max(errorsTotal-freebieErrors, 0) * .5f;
-    text("Penalty: " + penalty,400,340);
-    text("WPM w/ penalty: " + (wpm-penalty),400,360); //yes, minus, because higher WPM is better
+    text("Penalty: " + penalty,400,480);
+    text("WPM w/ penalty: " + (wpm-penalty),400,520); //yes, minus, because higher WPM is better
     return;
   }
   
@@ -120,12 +120,13 @@ void draw()
       text(letterGrid[row][col], x + cellWidth / 2, y + cellHeight / 2); // Draw letter in the center of the cell
     }
   }
-  
+    
     //feel free to change the size and position of the target/entered phrases and next button 
     textAlign(LEFT); //align the text left
-    fill(128);
+    fill(0);
+    textSize(40);
     text("Phrase " + (currTrialNum+1) + " of " + totalTrialNum, 70, 50); //draw the trial count
-    fill(128);
+    fill(0);
     text("Target:   " + currentPhrase, 70, 100); //draw the target string
     text("Entered:  " + currentTyped +"|", 70, 140); //draw what the user has entered thus far 
 
@@ -149,26 +150,26 @@ void draw()
       // first half phrase
       textAlign(CENTER);
       fill(200);
-      textSize(12); 
-      text("" + currentPhrase.substring(0, currentPhrase.length()/2), width/2, height/2+20); //draw current letter
+      textSize(40); 
+      text("" + currentPhrase.substring(0, currentPhrase.length()/2), width/2, height/2+60); //draw current letter
       
       // second half phrase
       textAlign(CENTER);
       fill(200);
-      textSize(12); 
-      text("" + currentPhrase.substring(currentPhrase.length()/2, currentPhrase.length()), width/2, height/2+40); //draw current letter
+      textSize(40); 
+      text("" + currentPhrase.substring(currentPhrase.length()/2, currentPhrase.length()), width/2, height/2+100); //draw current letter
     } else {
       // first half phrase
       textAlign(CENTER);
       fill(255, 0, 0);
-      textSize(12); 
-      text("" + currentPhrase.substring(0, currentPhrase.length()/2), width/2, height/2+20); //draw current letter
+      textSize(40); 
+      text("" + currentPhrase.substring(0, currentPhrase.length()/2), width/2, height/2+60); //draw current letter
       
       // second half phrase
       textAlign(CENTER);
       fill(255, 0, 0);
-      textSize(12); 
-      text("" + currentPhrase.substring(currentPhrase.length()/2, currentPhrase.length()), width/2, height/2+40); //draw current letter
+      textSize(40); 
+      text("" + currentPhrase.substring(currentPhrase.length()/2, currentPhrase.length()), width/2, height/2+100); //draw current letter
     }
   }
  
@@ -197,24 +198,6 @@ void mouseClicked() {
       //System.out.println("double click time ms: " + (dclick2time - dclick1time));
       //if (dclick2time - dclick1time <= 350) { //double click has finished
         //do clicking
-        if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea/2)) { //check if click occured in letter area
-          if (currentLetter=='_') //if underscore, consider that a space bar
-            currentTyped+=" ";
-          else if (currentLetter=='`' & currentTyped.length()>0) //if `, treat that as a delete command
-            currentTyped = currentTyped.substring(0, currentTyped.length()-1);
-          else if (currentLetter!='`') //if not any of the above cases, add the current letter to the typed string
-            currentTyped+=currentLetter;
-          }
-          if(!currentTyped.equals(currentPhrase.substring(0, currentTyped.length()))) {
-            System.out.println("INCORRECT LETTER");
-            System.out.println(currentTyped);
-            System.out.println(currentPhrase.substring(0, currentTyped.length()));
-            incorrectLetter = true;
-          } else {
-            incorrectLetter = false;
-          }
-
-          currentLetterIndex++;
          //dclick1time = 0;
           //dclick2time = 0;
           //dclickStatus = false;
@@ -245,25 +228,11 @@ void mouseClicked() {
   
 
   //You are allowed to have a next button outside the 1" area
-  if (didMouseClick(600, 600, 200, 200)) //check if click is in next button
-  {
-    nextTrial(); //if so, advance to next trial
-  }
 }
 //my terrible implementation you can entirely replace
 void mousePressed()
 {
- for (int row = 0; row < gridRows; row++) {
-    for (int col = 0; col < gridCols; col++) {
-      float x = width / 2 - (sizeOfInputArea / 2) + col * cellWidth;
-      float y = height / 2 - (sizeOfInputArea / 2) + row * cellHeight;
-      if (mouseX >= x && mouseX < x + cellWidth && mouseY >= y && mouseY < y + cellHeight) {
-        // Detected a click within a grid cell, handle the click here
-        handleCellClick(row, col);
-        break; // Exit the loop after handling the click
-      }
-    }
-  }
+ 
 
   //System.out.println("IN MOUSEPRESSED");
   if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea) && !dclickStatus) { //swipe must start in click area
@@ -296,6 +265,39 @@ void updateLetterGrid() {
 }
 
 void mouseReleased() {
+  if (selectedRow != -1 && selectedCol != -1) {
+    currentLetter = letterGrid[selectedRow][selectedCol];
+    selectedRow = -1;
+    selectedCol = -1;
+  }
+  
+  if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea/2)) {
+  for (int row = 0; row < gridRows; row++) {
+    for (int col = 0; col < gridCols; col++) {
+      float x = width / 2 - (sizeOfInputArea / 2) + col * cellWidth;
+      float y = height / 2 - (sizeOfInputArea / 2) + row * cellHeight;
+      if (mouseX >= x && mouseX < x + cellWidth && mouseY >= y && mouseY < y + cellHeight) {
+        // Detected a click within a grid cell, handle the click here
+        handleCellClick(row, col);
+        System.out.println("handle cell check");
+        break; // Exit the loop after handling the click
+      }
+    }
+  }
+  currentTyped+=currentLetter;
+  }
+  
+            if(!currentTyped.equals(currentPhrase.substring(0, currentTyped.length()))) {
+            System.out.println("INCORRECT LETTER");
+            System.out.println(currentTyped);
+            System.out.println(currentPhrase.substring(0, currentTyped.length()));
+            incorrectLetter = true;
+          } else {
+            incorrectLetter = false;
+          }
+          
+          currentLetterIndex++;
+          
   System.out.println("got here");
   swipePos2x = mouseX;
   swipePos2y = mouseY;
@@ -332,6 +334,10 @@ void mouseReleased() {
     } else {
       incorrectLetter = false;
     }
+  }
+    if (didMouseClick(600, 600, 200, 200)) //check if click is in next button
+  {
+    nextTrial(); //if so, advance to next trial
   }
 }
 
