@@ -125,16 +125,17 @@ void draw()
     textAlign(LEFT); //align the text left
     fill(0);
     textSize(40);
-    text("Phrase " + (currTrialNum+1) + " of " + totalTrialNum, 70, 50); //draw the trial count
+    text("Phrase " + (currTrialNum+1) + " of " + totalTrialNum, 30, 50); //draw the trial count
     fill(0);
-    text("Target:   " + currentPhrase, 70, 100); //draw the target string
-    text("Entered:  " + currentTyped +"|", 70, 140); //draw what the user has entered thus far 
+    text("Target:   " + currentPhrase, 30, 100); //draw the target string
+    text("Entered:  " + currentTyped +"|", 30, 140); //draw what the user has entered thus far 
 
     //draw very basic next button
     fill(255, 0, 0);
-    rect(600, 600, 200, 200); //draw next button
+    rect(700, 700, 100, 100); //draw next button
     fill(255);
-    text("NEXT > ", 650, 650); //draw next label
+    textSize(30);
+    text("NEXT > ", 700, 750); //draw next label
 
     //example design draw code
     //fill(255, 0, 0); //red button
@@ -234,7 +235,7 @@ void mousePressed()
 {
  
 
-  //System.out.println("IN MOUSEPRESSED");
+  System.out.println("IN MOUSEPRESSED");
   if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea) && !dclickStatus) { //swipe must start in click area
     System.out.println("Stored x 1 and y 1 position");
     swipePos1x = mouseX;
@@ -301,6 +302,7 @@ void mouseReleased() {
   System.out.println("got here");
   swipePos2x = mouseX;
   swipePos2y = mouseY;
+  if (!didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea/2)) {
   if (swipePos1x < swipePos2x && (swipePos2y <= swipePos1y + 40 && swipePos2y >= swipePos1y - 40)) { //right swipe
     System.out.println("swiped right");
     currentSetIndex = max(0, currentSetIndex - 6);
@@ -312,7 +314,7 @@ void mouseReleased() {
     updateLetterGrid();
   }
   else if (swipePos1y > swipePos2y && (swipePos2x <= swipePos1x + 40 && swipePos2x >= swipePos1x - 40)) { //up swipe
-    //System.out.println("swiped up");
+    System.out.println("swiped up");
     currentTyped+=" ";
     if(!currentTyped.equals(currentPhrase.substring(0, currentTyped.length()))) {
       System.out.println("INCORRECT LETTER");
@@ -335,7 +337,8 @@ void mouseReleased() {
       incorrectLetter = false;
     }
   }
-    if (didMouseClick(600, 600, 200, 200)) //check if click is in next button
+  }
+    if (didMouseClick(700, 700, 100, 100)) //check if click is in next button
   {
     nextTrial(); //if so, advance to next trial
   }
