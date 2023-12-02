@@ -301,17 +301,17 @@ void mouseReleased() {
   System.out.println("got here");
   swipePos2x = mouseX;
   swipePos2y = mouseY;
-  if (swipePos1x < swipePos2x && (swipePos2y <= swipePos1y + 20 && swipePos2y >= swipePos1y - 20)) { //right swipe
+  if (swipePos1x < swipePos2x && (swipePos2y <= swipePos1y + 40 && swipePos2y >= swipePos1y - 40)) { //right swipe
     System.out.println("swiped right");
     currentSetIndex = max(0, currentSetIndex - 6);
     updateLetterGrid();
   }
-  else if (swipePos1x > swipePos2x && (swipePos2y <= swipePos1y + 20 && swipePos2y >= swipePos1y - 20)) { //left swipe
+  else if (swipePos1x > swipePos2x && (swipePos2y <= swipePos1y + 40 && swipePos2y >= swipePos1y - 40)) { //left swipe
     System.out.println("swiped left");
     currentSetIndex = min(alphabet.length() - 6, currentSetIndex + 6);
     updateLetterGrid();
   }
-  else if (swipePos1y > swipePos2y && (swipePos2x <= swipePos1x + 20 && swipePos2x >= swipePos1x - 20)) { //up swipe
+  else if (swipePos1y > swipePos2y && (swipePos2x <= swipePos1x + 40 && swipePos2x >= swipePos1x - 40)) { //up swipe
     //System.out.println("swiped up");
     currentTyped+=" ";
     if(!currentTyped.equals(currentPhrase.substring(0, currentTyped.length()))) {
@@ -323,7 +323,7 @@ void mouseReleased() {
       incorrectLetter = false;
     }
   }
-  else if ((swipePos1y < swipePos2y && (swipePos2x <= swipePos1x + 20 && swipePos2x >= swipePos1x - 20)) && currentTyped.length() > 0) { // down swipe
+  else if ((swipePos1y < swipePos2y && (swipePos2x <= swipePos1x + 40 && swipePos2x >= swipePos1x - 40)) && currentTyped.length() > 0) { // down swipe
     //System.out.println("swiped down");
     currentTyped = currentTyped.substring(0, currentTyped.length()-1);
     if(!currentTyped.equals(currentPhrase.substring(0, currentTyped.length()))) {
