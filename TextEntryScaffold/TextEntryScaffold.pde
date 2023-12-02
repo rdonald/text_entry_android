@@ -152,25 +152,25 @@ void draw()
       textAlign(CENTER);
       fill(200);
       textSize(40); 
-      text("" + currentPhrase.substring(0, currentPhrase.length()/2), width/2, height/2+60); //draw current letter
+      text("" + currentTyped, width/2, height/2+60); //draw current letter
       
       // second half phrase
-      textAlign(CENTER);
-      fill(200);
-      textSize(40); 
-      text("" + currentPhrase.substring(currentPhrase.length()/2, currentPhrase.length()), width/2, height/2+100); //draw current letter
+      //textAlign(CENTER);
+      //fill(200);
+      //textSize(40); 
+      //text("" + currentPhrase.substring(currentPhrase.length()/2, currentPhrase.length()), width/2, height/2+100); //draw current letter
     } else {
       // first half phrase
       textAlign(CENTER);
       fill(255, 0, 0);
       textSize(40); 
-      text("" + currentPhrase.substring(0, currentPhrase.length()/2), width/2, height/2+60); //draw current letter
+      text("" + currentTyped, width/2, height/2+60); //draw current letter
       
-      // second half phrase
-      textAlign(CENTER);
-      fill(255, 0, 0);
-      textSize(40); 
-      text("" + currentPhrase.substring(currentPhrase.length()/2, currentPhrase.length()), width/2, height/2+100); //draw current letter
+      //// second half phrase
+      //textAlign(CENTER);
+      //fill(255, 0, 0);
+      //textSize(40); 
+      //text("" + currentPhrase.substring(currentPhrase.length()/2, currentPhrase.length()), width/2, height/2+100); //draw current letter
     }
   }
  
