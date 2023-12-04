@@ -245,10 +245,7 @@ void mousePressed()
 }
 
 void handleCellClick(int row, int col) {
-  // Handle the click on the cell identified by row and col
-  // For example, set the current letter or perform other actions
   currentLetter = letterGrid[row][col];
-  // Add any additional handling if needed
 }
 
 void updateLetterGrid() {
@@ -256,9 +253,9 @@ void updateLetterGrid() {
   for (int row = 0; row < gridRows; row++) {
     for (int col = 0; col < gridCols; col++) {
       int index = currentSetIndex + row * gridCols + col;
-      // Ensure the index is within the bounds of the alphabet
+      // within bounds of alphabets
       if (index < alphabet.length()) {
-        // Update the cell with the correct letter
+        // Update the cell with next 6 letters
         letterGrid[row][col] = alphabet.charAt(index);
       }
     }
@@ -278,10 +275,10 @@ void mouseReleased() {
       float x = width / 2 - (sizeOfInputArea / 2) + col * cellWidth;
       float y = height / 2 - (sizeOfInputArea / 2) + row * cellHeight;
       if (mouseX >= x && mouseX < x + cellWidth && mouseY >= y && mouseY < y + cellHeight) {
-        // Detected a click within a grid cell, handle the click here
+        //handles click 
         handleCellClick(row, col);
         System.out.println("handle cell check");
-        break; // Exit the loop after handling the click
+        break;
       }
     }
   }
